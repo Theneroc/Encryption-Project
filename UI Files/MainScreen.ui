@@ -1,0 +1,409 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Dialog</class>
+ <widget class="QDialog" name="Dialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1112</width>
+    <height>838</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(0, 255, 0);</string>
+  </property>
+  <widget class="QLabel" name="txtTitle">
+   <property name="geometry">
+    <rect>
+     <x>210</x>
+     <y>50</y>
+     <width>691</width>
+     <height>91</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>32</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(0, 100, 0);</string>
+   </property>
+   <property name="text">
+    <string>Goon Squad Encrypting</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btnSelectFile">
+   <property name="geometry">
+    <rect>
+     <x>750</x>
+     <y>230</y>
+     <width>280</width>
+     <height>80</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>12</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">
+QPushButton#btnSelectFile::hover
+{
+border: 6px solid rgb(255,255,255);
+}
+
+QPushButton#btnSelectFile{
+
+
+background-color: rgb(0, 255, 0);
+border: 6px solid rgb(0,100,0);
+
+}</string>
+   </property>
+   <property name="text">
+    <string>Choose Plain Text File</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btnSelectOutputDestination">
+   <property name="geometry">
+    <rect>
+     <x>760</x>
+     <y>480</y>
+     <width>280</width>
+     <height>80</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>12</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">
+QPushButton#btnSelectOutputDestination::hover
+{
+border: 6px solid rgb(255,255,255);
+}
+
+QPushButton#btnSelectOutputDestination{
+
+
+background-color: rgb(0, 255, 0);
+border: 6px solid rgb(0,100,0);
+
+}</string>
+   </property>
+   <property name="text">
+    <string>Choose Output Destination</string>
+   </property>
+  </widget>
+  <widget class="QPlainTextEdit" name="taPlainText">
+   <property name="geometry">
+    <rect>
+     <x>80</x>
+     <y>200</y>
+     <width>551</width>
+     <height>171</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(255,255,255)</string>
+   </property>
+  </widget>
+  <widget class="QPlainTextEdit" name="taCipherText">
+   <property name="geometry">
+    <rect>
+     <x>80</x>
+     <y>480</y>
+     <width>551</width>
+     <height>151</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(255, 255, 255);</string>
+   </property>
+   <property name="readOnly">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btnEncrypt">
+   <property name="geometry">
+    <rect>
+     <x>150</x>
+     <y>730</y>
+     <width>180</width>
+     <height>60</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>16</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">
+QPushButton#btnEncrypt::hover
+{
+border: 6px solid rgb(255,255,255);
+}
+
+QPushButton#btnEncrypt{
+
+
+background-color: rgb(0, 255, 0);
+border: 6px solid rgb(0,100,0);
+
+}</string>
+   </property>
+   <property name="text">
+    <string>Encrypt</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btnDecrypt">
+   <property name="geometry">
+    <rect>
+     <x>860</x>
+     <y>730</y>
+     <width>180</width>
+     <height>60</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>16</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">
+QPushButton#btnDecrypt::hover
+{
+border: 6px solid rgb(255,255,255);
+}
+
+QPushButton#btnDecrypt{
+
+
+background-color: rgb(0, 255, 0);
+border: 6px solid rgb(0,100,0);
+
+}</string>
+   </property>
+   <property name="text">
+    <string>Decrypt</string>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="cmbEncryptionTechniques">
+   <property name="geometry">
+    <rect>
+     <x>440</x>
+     <y>700</y>
+     <width>311</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(255, 255, 255);</string>
+   </property>
+   <property name="currentIndex">
+    <number>0</number>
+   </property>
+   <item>
+    <property name="text">
+     <string>Ceaser Cipher</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Columnar Transposition Cipher</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Rail-Fence Cipher</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Playerfair Cipher</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QLabel" name="txtEncryptionTechnique">
+   <property name="geometry">
+    <rect>
+     <x>440</x>
+     <y>660</y>
+     <width>311</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>16</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>Encryption Technique:</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="txtInputText">
+   <property name="geometry">
+    <rect>
+     <x>90</x>
+     <y>150</y>
+     <width>171</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>16</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+     <underline>false</underline>
+    </font>
+   </property>
+   <property name="text">
+    <string>Input Text:</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="txtOutputText">
+   <property name="geometry">
+    <rect>
+     <x>80</x>
+     <y>440</y>
+     <width>171</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>16</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>Output Text:</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="tfKey">
+   <property name="geometry">
+    <rect>
+     <x>510</x>
+     <y>790</y>
+     <width>161</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(255, 255, 255);</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="txtKey">
+   <property name="geometry">
+    <rect>
+     <x>510</x>
+     <y>750</y>
+     <width>121</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>12</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>Key:</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="txtFileChosen">
+   <property name="geometry">
+    <rect>
+     <x>680</x>
+     <y>330</y>
+     <width>401</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>12</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="txtOutputDestination">
+   <property name="geometry">
+    <rect>
+     <x>690</x>
+     <y>580</y>
+     <width>391</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>12</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
