@@ -1,10 +1,15 @@
 import math
 
+#key input syntax must be 1,2,3,4....
 
-def validateKey(key:str):
+def validateKey(key: str):
 
-    if not key.isnumeric():
+    keyAsString = "".join(key.split(","))
+    if not keyAsString.isnumeric():
         return False
+
+    key = key.split(',')
+
     for i in range(len(key)):  # check for negative numbers or 0 in the key
         if int(key[i]) <= 0:
             return False
@@ -18,6 +23,8 @@ def validateKey(key:str):
         if not flag:
             return False
 
+
+
     for i in range(len(key)):  # check if there are repititions of values in the key
         for j in range(i + 1, len(key)):
             if key[i] == key[j]:
@@ -26,9 +33,11 @@ def validateKey(key:str):
     return True  # Valid
 
 
-def encrypt(key:str, plainText):
+def encrypt(plainText, key: str):
     if (not validateKey(key)):
         return
+
+    key = key.split(',')
     table = []
 
     for i in range(int(math.ceil(len(plainText) / len(key)))):
@@ -47,11 +56,10 @@ def encrypt(key:str, plainText):
             columnIndex = 0
             rowIndex += 1
 
-    for i in range(len(table)):
-        for j in range(len(table[i])):
-            if len(table[i][j]) == 0:
-                table[i][j] = '_'
-
+    # for i in range(len(table)):
+    #     for j in range(len(table[i])):
+    #         if len(table[i][j]) == 0:
+    #             table[i][j] = '_'
 
     keyList = []
 
@@ -66,13 +74,16 @@ def encrypt(key:str, plainText):
             else:
                 cipherText += table[j][i]
 
-
+    #print(table)
     return cipherText
 
 
-def decrypt(key:str,cipherText):
+def decrypt(cipherText, key: str):
     if not validateKey(key):
         return
+
+    key = key.split(',')
+
     table = []
 
     columnLength = int(math.ceil(len(cipherText) / len(key)))
@@ -90,15 +101,36 @@ def decrypt(key:str,cipherText):
     columnIndex = 0
     rowIndex = 0
 
+    rowLength = len(cipherText) // len(key)+1
+
+    #print(rowLength)
+
+    #print(len(cipherText))
+
+    emptyCells =  int(math.fabs(len(cipherText) - (len(key) * rowLength)))
+
+    # print("Empty Cells: "+str(emptyCells))
+    # print("Len of key: "+str(len(key)))
+
     for letter in cipherText:
 
+        # print(table)
+        # print("The column Index: "+str(columnIndex))
+        # print("The row: "+str(rowIndex))
+        # print("The actual column: "+str(keyList[columnIndex]))
+        # print((len(key) - emptyCells))
+        # print((rowIndex == (rowLength-1) and keyList[columnIndex] >= (len(key) - emptyCells)))
         table[rowIndex][keyList[columnIndex]] = letter
-
         rowIndex += 1
 
-        if rowIndex == columnLength:
+
+        if (rowIndex == columnLength) or (rowIndex == (rowLength-1) and keyList[columnIndex] >= (len(key) - emptyCells)) :
             rowIndex = 0
             columnIndex += 1
+
+
+
+    #print(table)
 
     plainText = ""
     for i in range(len(table)):
@@ -107,4 +139,11 @@ def decrypt(key:str,cipherText):
                 continue
             else:
                 plainText += table[i][j]
-    return  plainText
+    return plainText
+
+
+#cipherText = encrypt("I love shwarma it is the best", "52314")
+#print(cipherText)
+
+#print(decrypt(cipherText, "52314"))
+#print(decrypt(encrypt("I love shwarma it is the best!!","7,4,6,2,3,5,1"),"7,4,6,2,3,5,1"))

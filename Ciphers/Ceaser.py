@@ -4,6 +4,9 @@ def validate(key:str):
     if not key.isnumeric():
         return False
 
+    if int(key)>26 or int(key)<0:
+        return False
+
     return True
 
 def decrypt(message, key:str):

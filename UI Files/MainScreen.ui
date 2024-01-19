@@ -241,16 +241,6 @@ border: 6px solid rgb(0,100,0);
      <string>Columnar Transposition Cipher</string>
     </property>
    </item>
-   <item>
-    <property name="text">
-     <string>Rail-Fence Cipher</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>Playerfair Cipher</string>
-    </property>
-   </item>
   </widget>
   <widget class="QLabel" name="txtEncryptionTechnique">
    <property name="geometry">
