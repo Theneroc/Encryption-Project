@@ -170,31 +170,31 @@ def XOR(operand1: bytes, operand2: bytes):
 
 #plainText = "In this tutorial, we are going to learn how to implement Some"
 
-with open('largetext.txt','r') as f:
-      plainText = f.read()
-
-print(len(plainText))
-
-fileSignature = sha256(plainText.encode('utf-8')).hexdigest().encode('utf-8')
-
-#print(plainText)
-
-
-#cipherText = encryptCaeser(plainText, 5)
-key = 12312
-cipherText = encryptColumnar(plainText, key)
-
-#print(cipherText)
-
-#decipheredPlainText = decryptCaeser(cipherText,key,fileSignature)
-decipheredPlainText = decryptColumnar(cipherText,key,fileSignature)
-
-
-#print(decipheredPlainText)
-
-testHash = sha256(decipheredPlainText.encode('utf-8')).hexdigest().encode('utf-8')
-
-if testHash == fileSignature:
-    print("Encrypting and Decrypting processes are successful")
-else:
-    print("FAILED!")
+# with open('largetext.txt','r') as f:
+#       plainText = f.read()
+#
+# print(len(plainText))
+#
+# fileSignature = sha256(plainText.encode('utf-8')).hexdigest().encode('utf-8')
+#
+# #print(plainText)
+#
+#
+# #cipherText = encryptCaeser(plainText, 5)
+# key = 12312
+# cipherText = encryptColumnar(plainText, key)
+#
+# #print(cipherText)
+#
+# #decipheredPlainText = decryptCaeser(cipherText,key,fileSignature)
+# decipheredPlainText = decryptColumnar(cipherText,key,fileSignature)
+#
+#
+# #print(decipheredPlainText)
+#
+# testHash = sha256(decipheredPlainText.encode('utf-8')).hexdigest().encode('utf-8')
+#
+# if testHash == fileSignature:
+#     print("Encrypting and Decrypting processes are successful")
+# else:
+#     print("FAILED!")
