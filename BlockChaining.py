@@ -1,6 +1,7 @@
 import random
 from hashlib import sha256
-from Ciphers import Ceaser, Columnar
+from Ciphers import Ceaser, Columnar, EnhancedColumnar
+
 
 #if an encryption or decryption method returns null, then the key is invalid.
 
@@ -104,7 +105,6 @@ def decryptColumnar(cipherText: str, key: int, fileSignature):
     cipherBlockSignature = fileSignature
     decipheredPlainText =""
 
-    random.seed(key)
 
     for block in cipherTextBlocks:
 
@@ -132,6 +132,74 @@ def decryptColumnar(cipherText: str, key: int, fileSignature):
             return decipheredPlainText.split("0")[0]
         else:
             return decipheredPlainText
+
+
+def encryptEnhancedColumnar(plainText: str, key: int):
+
+    random.seed(key)
+
+    columnSize = (key%32)
+
+    fileSignature = sha256(plainText.encode('utf-8')).hexdigest().encode('utf-8')  # signature of entire plaintext
+
+    blocks = splitIntoBlocks(plainText, fileSignature.decode('utf-8'))
+
+    cipherBlockSignature = fileSignature
+
+    cipherText = ""
+
+    for block in blocks:
+
+        plainTextBlock = XOR(block.encode('utf-8'), cipherBlockSignature)
+
+        cipherTextBlock = EnhancedColumnar.encrypt(plainTextBlock.decode('utf-8'), random.randint(0,999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999))
+
+        if cipherTextBlock == None:
+            return
+
+        cipherBlockSignature = sha256(cipherTextBlock[:32].encode('utf-8')).hexdigest().encode('utf-8')
+
+        cipherText += cipherTextBlock
+
+
+    return cipherText
+
+
+def decryptEnchancedColumnar(cipherText: str, key: int, fileSignature):
+    random.seed(key)
+
+    columnSize = (key % 32)
+
+    cipherTextBlocks = splitIntoBlocks(cipherText, fileSignature.decode('utf-8'))
+
+    # print(cipherTextBlocks)
+
+    cipherBlockSignature = fileSignature
+    decipheredPlainText = ""
+
+    for block in cipherTextBlocks:
+
+        print(block)
+        print(len(block))
+        decipheredBlock = EnhancedColumnar.decrypt(block, random.randint(0,999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999))
+
+        if decipheredBlock == None:
+            return
+
+        plainTextBlock = XOR(decipheredBlock[:32].encode('utf-8'), cipherBlockSignature).decode('utf-8')
+
+        cipherBlockSignature = sha256(block.encode('utf-8')).hexdigest().encode('utf-8')
+
+        decipheredPlainText += plainTextBlock
+
+    if b'\FF'.decode('utf-8') in decipheredPlainText:
+        return decipheredPlainText.split(b'\FF'.decode('utf-8'))[0]
+    else:
+        if "0" in decipheredPlainText:
+            return decipheredPlainText.split("0")[0]
+        else:
+            return decipheredPlainText
+
 
 def splitIntoBlocks(text: str, signature: str):  # of 256 bits
     blocks = []  #
@@ -168,33 +236,37 @@ def XOR(operand1: bytes, operand2: bytes):
 
 
 
-#plainText = "In this tutorial, we are going to learn how to implement Some"
+plainText = "In this tutorial, we are going to learn how to implement Some1234"
+
 
 # with open('largetext.txt','r') as f:
 #       plainText = f.read()
 #
 # print(len(plainText))
 #
-# fileSignature = sha256(plainText.encode('utf-8')).hexdigest().encode('utf-8')
+fileSignature = sha256(plainText.encode('utf-8')).hexdigest().encode('utf-8')
 #
 # #print(plainText)
 #
 #
 # #cipherText = encryptCaeser(plainText, 5)
-# key = 12312
+key = 12312
 # cipherText = encryptColumnar(plainText, key)
 #
-# #print(cipherText)
+cipherText = encryptEnhancedColumnar(plainText,key)
+
+print(cipherText)
 #
 # #decipheredPlainText = decryptCaeser(cipherText,key,fileSignature)
 # decipheredPlainText = decryptColumnar(cipherText,key,fileSignature)
+
+decipheredPlainText = decryptEnchancedColumnar(cipherText,key,fileSignature)
 #
+#print(decipheredPlainText)
 #
-# #print(decipheredPlainText)
+testHash = sha256(decipheredPlainText.encode('utf-8')).hexdigest().encode('utf-8')
 #
-# testHash = sha256(decipheredPlainText.encode('utf-8')).hexdigest().encode('utf-8')
-#
-# if testHash == fileSignature:
-#     print("Encrypting and Decrypting processes are successful")
-# else:
-#     print("FAILED!")
+if testHash == fileSignature:
+    print("Encrypting and Decrypting processes are successful")
+else:
+    print("FAILED!")
