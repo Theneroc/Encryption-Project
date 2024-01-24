@@ -50,12 +50,13 @@ def encrypt(plainText, seed: int):
 
     for i in secondKeyList:
         for j in range(len(table[i])):
-            if newTable[i][j]:
+            if len(newTable[i][j])!=0:
                 cipherText += newTable[i][j]
             else:
                 cipherText += "$"
 
-    #print(cipherText)
+    # print(cipherText)
+    # print(len(cipherText))
 
     return cipherText
 
@@ -96,7 +97,7 @@ def decrypt(cipherText, seed: int):
     for i in range(rows):
         for j in range(keyLen):
             if newTable[i][j] != "$" and not len(newTable[i][j])==0:
-                print(newTable)
+                #print(newTable)
                 #print(keyLen)
                 #print(newTable[i][j])
                 plainText += newTable[i][j]
@@ -104,5 +105,6 @@ def decrypt(cipherText, seed: int):
     return plainText
 
 
-#cipherText = encrypt("My name is Izzat and I like to goon 24/7 with khalil and othman", 52)
-#print(decrypt(cipherText, 52))
+# cipherText = encrypt("My name is Izzat and I like to goon 24/7 with khalil and othman asdads a a a  s", 52)
+# print(cipherText)
+# print(decrypt(cipherText, 52))

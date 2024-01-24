@@ -1,7 +1,11 @@
 import random
 
 
-def caesarDecipher(encrypted_message, shifts):
+def decrypt(encrypted_message, seed):
+    random.seed(seed)
+
+    shifts = [random.randint(-25, 25) for _ in encrypted_message]
+
     result = ""
     for char, shift in zip(encrypted_message, shifts):
         if char.isalpha():
@@ -14,7 +18,9 @@ def caesarDecipher(encrypted_message, shifts):
     return result
 
 
-def caesarCipher(message, shifts):
+def encrypt(message, seed):
+    random.seed(seed)
+    shifts = [random.randint(-25, 25) for _ in message]
     result = ""
     for char, shift in zip(message, shifts):
         if char.isalpha():
@@ -27,27 +33,16 @@ def caesarCipher(message, shifts):
     return result
 
 
-def main():
-    try:
-        shiftNumber = int(input("Enter the No. of Shifts => "))
-
-        random.seed(shiftNumber)
-        # creating a seed based on the users input for the key
-        # shiftNumber = 3
-        # use this if you want to harcode it
-    except ValueError:
-        print("Enter Integer Value.")
-        return
-    message = input("Enter the plain-text you want to Encrypt => ")
-    shifts = [random.randint(0, 25) for _ in message]
-    print(shifts)
-
-    encrypted = caesarCipher(message, shifts)
-    print(f"Encrypted => {encrypted}")
-
-    decrypted = caesarDecipher(encrypted, shifts)
-    print(f"Decrypted => {decrypted}")
-
-
-if __name__ == "__main__":
-    main()
+# key =12321
+#
+# plainText = "Khalil loves to goon to his own voice"
+#
+# print(plainText)
+#
+# cipherText = encrypt(plainText,key)
+#
+# print(cipherText)
+#
+# decipheredText = decrypt(cipherText,key)
+#
+# print(decipheredText)
