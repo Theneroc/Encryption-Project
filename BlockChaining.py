@@ -6,9 +6,11 @@ from Ciphers import Ceaser, Columnar, EnhancedColumnar, EnhancedCaeser
 # if an encryption or decryption method returns null, then the key is invalid.
 
 def encryptCaeser(plainText: str, key: int):
+    #print(plainText)
     random.seed(key)
 
     fileSignature = sha256(plainText.encode('utf-8')).hexdigest().encode('utf-8')  # signature of entire plaintext
+    #print(fileSignature)
 
     blocks = splitIntoBlocks(plainText, fileSignature.decode('utf-8'))
 
@@ -28,11 +30,17 @@ def encryptCaeser(plainText: str, key: int):
 
         cipherText += cipherTextBlock
 
-    return cipherText
+
+    #print(cipherText)
+
+    return cipherText,fileSignature
 
 
-def decryptCaeser(cipherText: str, key: int, fileSignature):
+def decryptCaeser(cipherText: str, key: int, fileSignature:bytes):
+
     cipherTextBlocks = splitIntoBlocks(cipherText, fileSignature.decode('utf-8'))
+
+
 
     cipherBlockSignature = fileSignature
     decipheredPlainText = ""
@@ -84,7 +92,7 @@ def encryptEnhancedCaeser(plainText: str, key: int):
 
         cipherText += cipherTextBlock
 
-    return cipherText
+    return cipherText,fileSignature
 
 def decryptEnhancedCaeser(cipherText: str, key: int, fileSignature):
     cipherTextBlocks = splitIntoBlocks(cipherText, fileSignature.decode('utf-8'))
@@ -117,6 +125,8 @@ def decryptEnhancedCaeser(cipherText: str, key: int, fileSignature):
 
 
 def encryptColumnar(plainText: str, key: int):
+
+
     random.seed(key)
 
     columnSize = (key % 32)
@@ -128,6 +138,7 @@ def encryptColumnar(plainText: str, key: int):
     cipherBlockSignature = fileSignature
 
     cipherText = ""
+
 
     for block in blocks:
         plainTextBlock = XOR(block.encode('utf-8'), cipherBlockSignature)
@@ -147,10 +158,12 @@ def encryptColumnar(plainText: str, key: int):
 
         cipherText += cipherTextBlock
 
-    return cipherText
 
 
-def decryptColumnar(cipherText: str, key: int, fileSignature):
+    return cipherText, fileSignature
+
+
+def decryptColumnar(cipherText: str, key: int, fileSignature:bytes):
     random.seed(key)
 
     columnSize = (key % 32)
@@ -191,62 +204,75 @@ def decryptColumnar(cipherText: str, key: int, fileSignature):
 
 
 def encryptEnhancedColumnar(plainText: str, key: int):
+
+
     random.seed(key)
+
+    columnSize = (key % 32)
 
     fileSignature = sha256(plainText.encode('utf-8')).hexdigest().encode('utf-8')  # signature of entire plaintext
 
     blocks = splitIntoBlocks(plainText, fileSignature.decode('utf-8'))
+
     cipherBlockSignature = fileSignature
 
     cipherText = ""
 
+
     for block in blocks:
-
-
         plainTextBlock = XOR(block.encode('utf-8'), cipherBlockSignature)
 
         currentKey = random.randint(0,
                                     999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999)
 
-        cipherTextBlock = EnhancedColumnar.encrypt(plainTextBlock.decode('utf-8'), currentKey)
+        keylen = currentKey%32
+        if keylen < 4:
+            keylen=4;
 
-        if cipherTextBlock is None:
+        cipherTextBlock = EnhancedColumnar.encrypt(plainTextBlock.decode('utf-8'), currentKey,keylen)
+
+        if cipherTextBlock == None:
             return
 
-        temp = cipherTextBlock
-        print((temp.replace("$", "")))
-        cipherBlockSignature = sha256(temp.replace("$", "").encode('utf-8')).hexdigest().encode('utf-8')
+        cipherBlockSignature = sha256(cipherTextBlock.encode('utf-8')).hexdigest().encode('utf-8')
 
-        cipherText += cipherTextBlock + (b'\\FE1234'.decode('utf-8'))
-
-    return cipherText
+        cipherText += cipherTextBlock
 
 
-def decryptEnchancedColumnar(cipherText: str, key: int, fileSignature):
+
+    return cipherText, fileSignature
+
+
+def decryptEnhancedColumnar(cipherText: str, key: int, fileSignature:bytes):
     random.seed(key)
 
-    cipherTextBlocks = cipherText.split(b'\\FE1234'.decode('utf-8'))
+    columnSize = (key % 32)
+
+    cipherTextBlocks = splitIntoBlocks(cipherText, fileSignature.decode('utf-8'))
+
+    # print(cipherTextBlocks)
 
     cipherBlockSignature = fileSignature
     decipheredPlainText = ""
-    print("\n")
-    for block in cipherTextBlocks:
 
-        if len(block) == 0:
-            continue
+    for block in cipherTextBlocks:
 
         currentKey = random.randint(0,
                                     999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999)
-        decipheredBlock = EnhancedColumnar.decrypt(block, currentKey)
+
+        keylen = currentKey%32
+        if keylen < 4:
+            keylen=4;
+
+        decipheredBlock = EnhancedColumnar.decrypt(block, currentKey, keylen)
 
         if decipheredBlock == None:
             return
 
         plainTextBlock = XOR(decipheredBlock.encode('utf-8'), cipherBlockSignature).decode('utf-8')
 
-        print(decipheredBlock)
-
         cipherBlockSignature = sha256(block.encode('utf-8')).hexdigest().encode('utf-8')
+
         decipheredPlainText += plainTextBlock
 
     if b'\FF'.decode('utf-8') in decipheredPlainText:
@@ -258,7 +284,9 @@ def decryptEnchancedColumnar(cipherText: str, key: int, fileSignature):
             return decipheredPlainText
 
 
+
 def splitIntoBlocks(text: str, signature: str):  # of 256 bits
+
     blocks = []  #
 
     block = ""  # max size is 256 bits
@@ -294,37 +322,26 @@ def XOR(operand1: bytes, operand2: bytes):
 
 # print(b'\\FE'.decode('utf-8'))
 
-plainText = "In this tutorial, we are going to learn how to implement Some1234"
+#plainText = "I Love Shawrma"
 
 # with open('largetext.txt','r') as f:
 #       plainText = f.read()
-
-# print(len(plainText))
-#
-fileSignature = sha256(plainText.encode('utf-8')).hexdigest().encode('utf-8')
-#
-# #print(plainText)
 #
 #
-# #cipherText = encryptCaeser(plainText, 5)
-key = 12312
-# cipherText = encryptColumnar(plainText, key)
+# fileSignature = sha256(plainText.encode('utf-8')).hexdigest().encode('utf-8')
 #
-cipherText = encryptEnhancedCaeser(plainText, key)
-print(encryptCaeser(plainText,key))
-print("\n")
-print(cipherText)
+# key = 12312
+# cipherText,sig = encryptEnhancedColumnar(plainText, key)
 #
-# #decipheredPlainText = decryptCaeser(cipherText,key,fileSignature)
-# decipheredPlainText = decryptColumnar(cipherText,key,fileSignature)
-
-decipheredPlainText = decryptEnhancedCaeser(cipherText, key, fileSignature)
+# #print(cipherText)
 #
-# print(decipheredPlainText)
+# decipheredPlainText = decryptEnhancedColumnar(cipherText,key,fileSignature)
 #
-testHash = sha256(decipheredPlainText.encode('utf-8')).hexdigest().encode('utf-8')
+# #print(decipheredPlainText)
 #
-if testHash == fileSignature:
-    print("Encrypting and Decrypting processes are successful")
-else:
-    print("FAILED!")
+# testHash = sha256(decipheredPlainText.encode('utf-8')).hexdigest().encode('utf-8')
+#
+# if testHash == fileSignature:
+#     print("Encrypting and Decrypting processes are successful")
+# else:
+#     print("FAILED!")

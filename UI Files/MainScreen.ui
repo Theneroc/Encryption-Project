@@ -95,9 +95,9 @@ border: 6px solid rgb(0,100,0);
   <widget class="QPushButton" name="btnSelectOutputDestination">
    <property name="geometry">
     <rect>
-     <x>760</x>
+     <x>750</x>
      <y>480</y>
-     <width>280</width>
+     <width>301</width>
      <height>80</height>
     </rect>
    </property>
@@ -254,6 +254,16 @@ border: 6px solid rgb(0,100,0);
    <item>
     <property name="text">
      <string>Columnar Transposition Cipher</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Enchanced Ceaser cipher</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Enhanced Transpositional Cipher</string>
     </property>
    </item>
   </widget>
@@ -514,6 +524,39 @@ color:rgb(0,0,0);
    </property>
    <property name="text">
     <string>Signature:</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btnClear">
+   <property name="geometry">
+    <rect>
+     <x>880</x>
+     <y>20</y>
+     <width>211</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>16</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">
+QPushButton#btnClear::hover
+{
+border: 6px solid rgb(255,255,255);
+}
+
+QPushButton#btnClear{
+
+
+background-color: rgb(0, 255, 0);
+border: 6px solid rgb(0,100,0);
+
+}</string>
+   </property>
+   <property name="text">
+    <string>Clear Everything</string>
    </property>
   </widget>
  </widget>

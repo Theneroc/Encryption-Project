@@ -1,7 +1,7 @@
 import random
 
 
-def decrypt(encrypted_message, seed):
+def decrypt(encrypted_message, seed:int):
     random.seed(seed)
 
     shifts = [random.randint(-25, 25) for _ in encrypted_message]
@@ -18,7 +18,7 @@ def decrypt(encrypted_message, seed):
     return result
 
 
-def encrypt(message, seed):
+def encrypt(message, seed:int):
     random.seed(seed)
     shifts = [random.randint(-25, 25) for _ in message]
     result = ""
@@ -32,17 +32,3 @@ def encrypt(message, seed):
 
     return result
 
-
-# key =12321
-#
-# plainText = "Khalil loves to goon to his own voice"
-#
-# print(plainText)
-#
-# cipherText = encrypt(plainText,key)
-#
-# print(cipherText)
-#
-# decipheredText = decrypt(cipherText,key)
-#
-# print(decipheredText)

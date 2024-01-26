@@ -141,9 +141,3 @@ def decrypt(cipherText, key: str):
                 plainText += table[i][j]
     return plainText
 
-
-#cipherText = encrypt("I love shwarma it is the best", "52314")
-#print(cipherText)
-
-#print(decrypt(cipherText, "52314"))
-#print(decrypt(encrypt("I love shwarma it is the best!!","7,4,6,2,3,5,1"),"7,4,6,2,3,5,1"))

@@ -2,13 +2,8 @@ import math
 import random
 
 
-def encrypt(plainText, seed: int):
+def encrypt(plainText, seed: int, keyLen: int):
     random.seed(seed)
-
-    keyLen = (seed%10)
-
-    if keyLen<4:
-        keyLen=3
 
     firstKey = random.sample(range(0, keyLen), keyLen)
     #print(firstKey)
@@ -26,20 +21,20 @@ def encrypt(plainText, seed: int):
                 table[i].append(plainText[k])
                 k += 1
             else:
-                table[i].append("$")
-            newTable[i].append("$")
+                table[i].append([])
+            newTable[i].append([])
 
-    #(table)
+    #print(table)
     #print(newTable)
-    columnIndex = 0
-    rowIndex = 0
+    col = 0
+    row = 0
 
     for i in firstKey:
         for j in range(len(table)):
-            newTable[rowIndex][columnIndex] = table[j][i]
-            rowIndex += 1
-        rowIndex = 0
-        columnIndex += 1
+            newTable[row][col] = table[j][i]
+            row += 1
+        row = 0
+        col += 1
 
     #print(newTable)
 
@@ -50,61 +45,47 @@ def encrypt(plainText, seed: int):
 
     for i in secondKeyList:
         for j in range(len(table[i])):
-            if len(newTable[i][j])!=0:
+            if newTable[i][j]:
                 cipherText += newTable[i][j]
-            else:
-                cipherText += "$"
 
-    # print(cipherText)
-    # print(len(cipherText))
+    #print(cipherText)
 
     return cipherText
 
 
-def decrypt(cipherText, seed: int):
-
-    keyLen = (seed%10)
-    if keyLen<4:
-        keyLen=3
-
+def decrypt(cipherText, seed: int, keyLen: int):
     random.seed(seed)
 
     firstKey = random.sample(range(0, keyLen), keyLen)
     #print(firstKey)
 
-    rows = int(math.ceil(len(cipherText) / len(firstKey)))
+    rows = int(math.ceil(len(cipherText) / len(firstKey)))  # how many rows there are in the table, depending
+    # on the size of cipherText and firstKey
 
+    emptyCells = int(math.fabs(len(cipherText) - (keyLen * rows)))  # The amount of empty cells there are in the table
+    #print("empty cells: ", emptyCells)
     secondKey = random.sample(range(0, rows), rows)
     #print(secondKey)
 
-    newTable = []
+    table = []
     for row in range(rows):
-        newTable.append([])
+        table.append([])
         for col in range(keyLen):
-            newTable[row].append([])
-    row = 0
-    col = 0
-    for letter in cipherText:
-        newTable[secondKey[row]][firstKey[col]] = letter
-        if col < keyLen - 1:
-            col += 1
-        else:
-            col = 0
-            row += 1
+            table[row].append([])
 
-    #print(newTable)
+    k = 0
+    for row in secondKey:
+        for col in firstKey:
+            if row < rows - 1 or not (row == rows - 1 and col >= (keyLen - emptyCells)):
+                if k < len(cipherText):
+                    table[row][col] = cipherText[k]
+                    k += 1
+
+    #print(table)
     plainText = ""
     for i in range(rows):
-        for j in range(keyLen):
-            if newTable[i][j] != "$" and not len(newTable[i][j])==0:
-                #print(newTable)
-                #print(keyLen)
-                #print(newTable[i][j])
-                plainText += newTable[i][j]
+        for j in range(len(table[i])):
+            if table[i][j]:
+                plainText += table[i][j]
     #print(plainText)
     return plainText
-
-
-# cipherText = encrypt("My name is Izzat and I like to goon 24/7 with khalil and othman asdads a a a  s", 52)
-# print(cipherText)
-# print(decrypt(cipherText, 52))
